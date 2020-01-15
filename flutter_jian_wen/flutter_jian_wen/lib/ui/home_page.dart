@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jian_wen/model/news.dart';
+import 'package:flutter_jian_wen/utils/HttpUtils.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -40,19 +41,38 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+
+
   Widget getListBuilder(BuildContext context, int index) {
-    return Card(
-      child: Container(
-        child: Column(
-          children: <Widget>[
-            Image.network(
-              'https://www.canva.cn/learn/wp-content/uploads/sites/17/2019/09/Snipaste_2019-09-24_15-21-59.png',
+    return FutureBuilder(
+      future:getData() ,
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        if(snapshot.hasData){
+          for(String dir in snapshot.data){
+          }
+          return Card(
+            child: Container(
+              child: Column(
+                children: <Widget>[
+                  Image.network(
+                    'https://www.canva.cn/learn/wp-content/uploads/sites/17/2019/09/Snipaste_2019-09-24_15-21-59.png',
+                  ),
+                  Text('这是图片一')
+                ],
+              ),
             ),
-            Text('这是图片一')
-          ],
-        ),
-      ),
+          );
+
+        }else{
+           Text('没有数据');
+
+        }
+        return Text('这是默认返回的');
+
+      },
+
     );
+
   }
 
   Widget getDrawer() {
@@ -110,5 +130,11 @@ class HomePageState extends State<HomePage> {
         ),
       ],
     );
+  }
+
+   getData(){
+   // HttpUtils().get('http://v.juhe.cn/toutiao/index?type=keji&key=27d98876a75e6fb3f9eac28f71d807a0');
+
+
   }
 }
