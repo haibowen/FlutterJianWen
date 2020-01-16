@@ -48,7 +48,11 @@ class HomePageState extends State<HomePage> {
       future:getData() ,
       builder: (BuildContext context, AsyncSnapshot snapshot){
         if(snapshot.hasData){
-          for(String dir in snapshot.data){
+          print("###############################################futurebuilder");
+          print(snapshot.data);
+          for(Map map in snapshot.data){
+            map['title'];
+            print(map['title']);
           }
           return Card(
             child: Container(
@@ -133,8 +137,8 @@ class HomePageState extends State<HomePage> {
   }
 
    getData(){
-   // HttpUtils().get('http://v.juhe.cn/toutiao/index?type=keji&key=27d98876a75e6fb3f9eac28f71d807a0');
-
+   // HttpUtils()
+HttpUtils.get('http://v.juhe.cn/toutiao/index?type=keji&key=27d98876a75e6fb3f9eac28f71d807a0');
 
   }
 }
