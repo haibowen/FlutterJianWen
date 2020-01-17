@@ -27,9 +27,9 @@ class HttpUtils {
       // get
       var response = await dio.get(url);
       res = response.data;
-     // print(res['result']['data']);
+     //print(res['result']['data']);
       for(Map map in res['result']['data']){
-        //print(map['title']);
+       // print(map['title']);
       }
     } else {
       // post
