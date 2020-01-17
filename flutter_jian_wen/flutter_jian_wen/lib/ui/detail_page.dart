@@ -1,9 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+// ignore: must_be_immutable
 class DetailPage extends StatefulWidget {
   dynamic titleList;
   dynamic picList;
@@ -33,7 +32,6 @@ class DetailPageState extends State<DetailPage> {
     );
   }
 
-
   Widget getBodyTest() {
     return NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -43,7 +41,7 @@ class DetailPageState extends State<DetailPage> {
             expandedHeight: 200.0,
             leading: GestureDetector(
               child: Icon(Icons.arrow_back),
-              onTap: (){
+              onTap: () {
                 Navigator.pop(context);
               },
             ),
@@ -63,7 +61,7 @@ class DetailPageState extends State<DetailPage> {
       },
       body: WebView(
         initialUrl: urlList,
-        javascriptMode: JavascriptMode.unrestricted,
+        javascriptMode: JavascriptMode.disabled,
       ),
     );
   }

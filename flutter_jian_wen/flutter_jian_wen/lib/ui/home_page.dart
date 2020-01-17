@@ -1,9 +1,5 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_jian_wen/model/news.dart';
 import 'package:flutter_jian_wen/utils/HttpUtils.dart';
 
 import 'detail_page.dart';
@@ -24,6 +20,7 @@ class HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getInternetData();
   }
 
   @override
@@ -55,25 +52,30 @@ class HomePageState extends State<HomePage> {
 
   Widget getListBuilder(BuildContext context, int index) {
     return Card(
-      child:GestureDetector(
-        onTap: (){
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => DetailPage(titleList[index],picList[index],urlList[index])));
-        },
-        child:  Container(
-          child: Column(
-            children: <Widget>[
-              Image.network(
-                picList[index],
-                fit: BoxFit.contain,
-              ),
-              Text(titleList[index],style: TextStyle(fontSize: 12),)
-            ],
-          ),
+        child: GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailPage(
+                    titleList[index], picList[index], urlList[index])));
+      },
+      child: Container(
+//          width: MediaQuery.of(context).size.width/2,
+        child: Column(
+          children: <Widget>[
+            Image.network(
+              picList[index],
+              fit: BoxFit.contain,
+            ),
+            Text(
+              titleList[index],
+              style: TextStyle(fontSize: 12),
+            )
+          ],
         ),
-      )
-
-    );
+      ),
+    ));
   }
 
   Widget getDrawer() {
@@ -115,28 +117,30 @@ class HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        ListTile(
-          leading: Icon(Icons.settings),
-          title: Text('设置'),
-        ),
-        ListTile(
-          leading: Icon(Icons.settings),
-          title: Text('热点'),
-        ),
-        ListTile(
-          leading: Icon(Icons.settings),
-          title: Text('头条'),
-        ),
+        ListView.builder(
+          itemBuilder: getListDrawerItem,
+          itemCount: 10,
+          scrollDirection: Axis.vertical,
+          padding: EdgeInsets.zero,
+          shrinkWrap: true,
+        )
       ],
     );
   }
 
-  Future<Map> getInternetData() async {
+  Widget getListDrawerItem(BuildContext context, int index) {
+    return ListTile(
+      leading: Icon(Icons.event),
+      title: Text('设置'),
+      onTap: () {},
+    );
+  }
+
+  Future getInternetData() async {
     var temp = await HttpUtils.getInstance().get(
         'http://v.juhe.cn/toutiao/index?type=keji&key=27d98876a75e6fb3f9eac28f71d807a0');
     var result = temp.data['result'];
-    //print(result['data']);
-    //return result['data'];
+    print(result['data']);
     for (Map map in result['data']) {
       titleList.add(map['title']);
       picList.add(map['thumbnail_pic_s']);

@@ -10,38 +10,9 @@ class HttpUtils {
     if (dio == null) {
       //通过传递一个 `BaseOptions`来创建dio实例
       var options = BaseOptions(
-          connectTimeout: CONNECT_TIMEOUT,
-          receiveTimeout: RECEIVE_TIMEOUT);
+          connectTimeout: CONNECT_TIMEOUT, receiveTimeout: RECEIVE_TIMEOUT);
       dio = new Dio(options);
     }
     return dio;
   }
-
-  /// 请求api
-  static Future<Map> request(String url, {method}) async {
-    method = method ?? "get";
-
-    var dio = getInstance();
-    var res;
-    if (method == "get") {
-      // get
-      var response = await dio.get(url);
-      res = response.data;
-     //print(res['result']['data']);
-      for(Map map in res['result']['data']){
-       // print(map['title']);
-      }
-    } else {
-      // post
-      var response = await dio.post(url);
-      res = response.data;
-    }
-    return res;
-  }
-
-  /// get
-  static Future<Map> get(url) => request(url);
-
-  /// post
-  static Future<Map> post(url) => request(url, method: "post");
 }

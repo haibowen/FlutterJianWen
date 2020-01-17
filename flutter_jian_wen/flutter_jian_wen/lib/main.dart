@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jian_wen/ui/home_page.dart';
 
-import 'model/news.dart';
-
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
@@ -14,14 +12,8 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return HomePage();
-
   }
-
-
 }
