@@ -4,78 +4,24 @@ import 'package:flutter_jian_wen/utils/HttpUtils.dart';
 
 import 'detail_page.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return HomePageState();
-  }
-}
 
-class HomePageState extends State<HomePage> {
-  List<dynamic> titleList = [];
-  List<dynamic> picList = [];
-  List<dynamic> urlList = [];
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getInternetData();
-  }
-
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    getInternetData();
+    // TODO: implement build
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(
-            title: Text('简闻'),
-            actions: <Widget>[],
-          ),
-          drawer: Drawer(
-            child: getDrawer(),
-          ),
-          body: getBody()),
-    );
-  }
-
-  Widget getBody() {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, //每行三列
-          childAspectRatio: 1.0 //显示区,
-          ),
-      itemBuilder: getListBuilder,
-      itemCount: titleList.length,
-    );
-  }
-
-  Widget getListBuilder(BuildContext context, int index) {
-    return Card(
-        child: GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => DetailPage(
-                    titleList[index], picList[index], urlList[index])));
-      },
-      child: Container(
-//          width: MediaQuery.of(context).size.width/2,
-        child: Column(
-          children: <Widget>[
-            Image.network(
-              picList[index],
-              fit: BoxFit.contain,
-            ),
-            Text(
-              titleList[index],
-              style: TextStyle(fontSize: 12),
-            )
-          ],
+        appBar: AppBar(
+          title: Text('简闻'),
+          actions: <Widget>[],
         ),
+        drawer: Drawer(
+          child: getDrawer(),
+        ),
+        body:HomePageState(),
       ),
-    ));
+    );
   }
 
   Widget getDrawer() {
@@ -135,6 +81,77 @@ class HomePageState extends State<HomePage> {
       onTap: () {},
     );
   }
+}
+
+
+class HomePageState extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return HomePageStateShow();
+  }
+
+
+}
+
+class HomePageStateShow extends State<HomePageState> {
+  List<dynamic> titleList = [];
+  List<dynamic> picList = [];
+  List<dynamic> urlList = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getInternetData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    getInternetData();
+
+    return getBody();
+  }
+
+  Widget getBody() {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, //每行三列
+          childAspectRatio: 1.0 //显示区,
+      ),
+      itemBuilder: getListBuilder,
+      itemCount: titleList.length,
+    );
+  }
+
+  Widget getListBuilder(BuildContext context, int index) {
+    return Card(
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        DetailPageNews(
+                            titleList[index], picList[index], urlList[index])));
+          },
+          child: Container(
+//          width: MediaQuery.of(context).size.width/2,
+            child: Column(
+              children: <Widget>[
+                Image.network(
+                  picList[index],
+                  fit: BoxFit.contain,
+                ),
+                Text(
+                  titleList[index],
+                  style: TextStyle(fontSize: 12),
+                )
+              ],
+            ),
+          ),
+        ));
+  }
+
 
   Future getInternetData() async {
     var temp = await HttpUtils.getInstance().get(
