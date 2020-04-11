@@ -1,5 +1,5 @@
 # FlutterJianWen
-Flutter版本的简闻
+使用Flutter编写的新闻类应用 
 
 <table><tr>
 <td><img src="https://github.com/haibowen/FlutterJianWen/blob/master/flutter_jian_wen/flutter_jian_wen/icon/Screenshot_20200411_173051_com.example.flutter_jian_wen.jpg" width="320" height="657" border=0></td>
