@@ -1,12 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jian_wen/utils/HttpUtils.dart';
+import 'package:flutter_jian_wen/utils/data_url.dart';
 
 import 'detail_page.dart';
 
 List<dynamic> titleList = [];
 List<dynamic> picList = [];
 List<dynamic> urlList = [];
+List<dynamic> typeList = ["头条", "社会", "国内", "娱乐", "体育", "军事", "科技", "财经", "时尚"];
+List<Widget> iconShow = [
+  Icon(Icons.fiber_new),
+  Icon(Icons.book),
+  Icon(Icons.multiline_chart),
+  Icon(Icons.music_note),
+  Icon(Icons.laptop_chromebook),
+  Icon(Icons.airline_seat_flat),
+  Icon(Icons.filter),
+  Icon(Icons.photo_library),
+  Icon(Icons.keyboard),
+];
 
 class HomePage extends StatelessWidget {
   @override
@@ -22,7 +35,7 @@ class HomePage extends StatelessWidget {
           child: getDrawer(),
         ),
         body: FutureBuilder(
-            future: getInternetData(),
+            future: getInternetData(DataUrl().CAIJINGURL),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 for (Map map in snapshot.data) {
@@ -41,9 +54,27 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Future getInternetData() async {
-    var temp = await HttpUtils.getInstance().get(
-        'http://v.juhe.cn/toutiao/index?type=keji&key=27d98876a75e6fb3f9eac28f71d807a0');
+  Widget getBodyShow(String type) {
+    return FutureBuilder(
+        future: getInternetData(type ?? DataUrl().KEJIURL),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            for (Map map in snapshot.data) {
+              titleList.add(map['title']);
+              picList.add(map['thumbnail_pic_s']);
+              urlList.add(map['url']);
+            }
+
+            return getBody();
+          } else if (snapshot.hasError) {
+            return Text('出错了');
+          }
+          return Text('默认返回');
+        });
+  }
+
+  Future getInternetData(String type) async {
+    var temp = await HttpUtils.getInstance().get(type);
     var result = temp.data['result'];
     print(result['data']);
     return result['data'];
@@ -55,11 +86,11 @@ class HomePage extends StatelessWidget {
       children: <Widget>[
         Container(
           color: Colors.lightBlue,
-          height: 250.0,
+          height: 180.0,
           child: ListView(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(top: 10.0),
+                padding: EdgeInsets.only(top: 5.0),
                 alignment: Alignment.topLeft,
                 child: SizedBox(
                   width: 80.0,
@@ -90,20 +121,22 @@ class HomePage extends StatelessWidget {
         ),
         ListView.builder(
           itemBuilder: getListDrawerItem,
-          itemCount: 10,
+          itemCount: typeList.length,
           scrollDirection: Axis.vertical,
           padding: EdgeInsets.zero,
           shrinkWrap: true,
-        )
+        ),
       ],
     );
   }
 
   Widget getListDrawerItem(BuildContext context, int index) {
     return ListTile(
-      leading: Icon(Icons.event),
-      title: Text('设置'),
-      onTap: () {},
+      leading: iconShow[index],
+      title: Text(typeList[index]),
+      onTap: () {
+        getInternetData(DataUrl().JUNSHIURL);
+      },
     );
   }
 }
