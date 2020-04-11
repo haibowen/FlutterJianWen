@@ -20,8 +20,6 @@ class DetailPageNews extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    print(urlList.toString() + "   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-    print(picList.toString() + " ****************************************");
     return getBodyTest(context);
   }
 
@@ -53,16 +51,6 @@ class DetailPageNews extends StatelessWidget {
                 ),
               ),
             ),
-//            SliverFixedExtentList(
-//              itemExtent: 800,
-//              delegate:
-//                  SliverChildBuilderDelegate((BuildContext context, int index) {
-//                return WebView(
-//                  initialUrl: urlList,
-//                  javascriptMode: JavascriptMode.unrestricted,
-//                );
-//              }, childCount: 1),
-//            ),
             SliverAnimatedList(
               itemBuilder: _buildItem,
               initialItemCount: 1,
